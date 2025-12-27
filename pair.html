@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html onclick="document.getElementById('s').play()">
+<body style="background:#000;color:#0f4;text-align:center;font-family:monospace;padding:50px;">
+    <audio id="s" loop><source src="https://files.catbox.moe/p8h56m.mp3"></audio>
+    <h2>☣️ AWAIS-MAYO-MD ☣️</h2>
+    <input type="text" id="n" placeholder="923295533214" style="background:none;border:1px solid #0f4;color:#fff;padding:10px;">
+    <button onclick="f()" style="padding:10px;background:#0f4;font-weight:bold;">GET CODE</button>
+    <div id="o" style="font-size:30px;margin-top:20px;"></div>
+    <script>
+        async function f(){
+            document.getElementById('o').innerText="CONNECTING...";
+            let r = await fetch('/code?number='+document.getElementById('n').value);
+            let d = await r.json();
+            document.getElementById('o').innerText = d.code || "FAILED";
+        }
+    </script>
+</body>
+</html>
+  
