@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html onclick="document.getElementById('s').play()">
-<body style="background:#000;color:#0f4;text-align:center;font-family:monospace;padding:50px;">
-    <audio id="s" loop><source src="https://files.catbox.moe/p8h56m.mp3"></audio>
-    <h2>☣️ AWAIS-MAYO-MD ☣️</h2>
-    <input type="text" id="n" placeholder="923295533214" style="background:none;border:1px solid #0f4;color:#fff;padding:10px;">
-    <button onclick="f()" style="padding:10px;background:#0f4;font-weight:bold;">GET CODE</button>
-    <div id="o" style="font-size:30px;margin-top:20px;"></div>
+<head>
+    <style>
+        body { background: #000; color: #0f4; font-family: 'Courier New', Courier, monospace; overflow: hidden; margin: 0; text-align: center; }
+        canvas { position: absolute; top: 0; left: 0; z-index: -1; }
+        .content { position: relative; z-index: 1; padding-top: 100px; }
+        input { background: rgba(0,0,0,0.5); border: 1px solid #0f4; color: #fff; padding: 10px; width: 250px; }
+        button { padding: 10px 20px; background: #0f4; color: #000; font-weight: bold; cursor: pointer; border: none; }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <audio id="s" loop><source src="https://files.catbox.moe/p8h56m.mp3" type="audio/mpeg"></audio>
+    
+    <div class="content">
+        <h1>☣️ AWAIS-MAYO-MD ☣️</h1>
+        <p>Type Number with Country Code</p>
+        <input type="text" id="n" placeholder="923295533214">
+        <br><br>
+        <button onclick="f()">GET PAIRING CODE</button>
+        <div id="o" style="font-size: 40px; margin-top: 30px; font-weight: bold; text-shadow: 0 0 10px #0f4;"></div>
+    </div>
+
     <script>
-        async function f(){
-            document.getElementById('o').innerText="CONNECTING...";
-            let r = await fetch('/code?number='+document.getElementById('n').value);
+        // Matrix Rain Effect (Coding ki Barish)
+        const c = document.getElementById('matrix');
+        const ctx = c.getContext('2d');
+        c.height = window.innerHeight; c.width = window.innerWidth;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+        const fontSize = 16; const columns = c.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, c.width, c.height);
+            ctx.fillStyle = "#0f4"; ctx.font = fontSize + "px arial";
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > c.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 33);
+
+        async function f() {
+            document.getElementById('o').innerText = "CONNECTING...";
+            let num = document.getElementById('n').value;
+            let r = await fetch('/code?number=' + num);
             let d = await r.json();
-            document.getElementById('o').innerText = d.code || "FAILED";
+            document.getElementById('o').innerText = d.code || "ERROR";
         }
     </script>
 </body>
 </html>
-  
